@@ -13,6 +13,6 @@ export class UserController {
 
   @Get(':email')
   async findUserByEmail(@Param('email') email: string) {
-    return await this.userService.findUserByEmail(email);
+    return await this.userService.findUserByUsername(email);
   }
 }

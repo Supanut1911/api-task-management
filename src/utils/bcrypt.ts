@@ -5,6 +5,6 @@ export function encodePassword(rawPassword: string) {
   return bcrypt.hashSync(rawPassword, SALT);
 }
 
-export function comparePasswords(rawPassword: string, hashPassword: string) {
+export function comparePassword(rawPassword: string, hashPassword: string) {
   return bcrypt.compareSync(rawPassword, hashPassword);
 }
