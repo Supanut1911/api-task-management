@@ -8,6 +8,7 @@ import { User } from 'src/user/model/user.model';
 import { Task } from './model/tasks.model';
 import mongoose, { Model } from 'mongoose';
 import { CreateTaskDTO } from './DTO/createTask.dto';
+import { UpdateTaskDTO } from './DTO/updateTask.dto';
 
 @Injectable()
 export class TaskService {
@@ -55,6 +56,19 @@ export class TaskService {
       return task;
     } catch (error) {
       throw new BadRequestException(`query task id :${taskId} fail`);
+    }
+  }
+
+  async updateTaskById(updateTaskDTO: UpdateTaskDTO, taskId: string) {
+    const { title, description } = updateTaskDTO;
+    try {
+      const updateTask = await this.getTaskById(taskId);
+      if (title) updateTask.title = title;
+      if (description) updateTask.description = description;
+      updateTask.save();
+      return updateTask;
+    } catch (error) {
+      throw new BadRequestException(`update task id:${taskId} fail`);
     }
   }
 }
