@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -43,5 +44,10 @@ export class TaskController {
     @Body() updateTaskDTO: UpdateTaskDTO,
   ) {
     return await this.taskService.updateTaskById(updateTaskDTO, taskId);
+  }
+
+  @Delete(':taskId')
+  async deleteTaskById(@Param('taskId') taskId: string) {
+    return await this.taskService.deleteTaskById(taskId);
   }
 }

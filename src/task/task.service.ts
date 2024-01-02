@@ -55,7 +55,9 @@ export class TaskService {
       }
       return task;
     } catch (error) {
-      throw new BadRequestException(`query task id :${taskId} fail`);
+      throw new BadRequestException(
+        `query task id :${taskId} fail, error ${error}`,
+      );
     }
   }
 
@@ -68,7 +70,27 @@ export class TaskService {
       updateTask.save();
       return updateTask;
     } catch (error) {
-      throw new BadRequestException(`update task id:${taskId} fail`);
+      throw new BadRequestException(
+        `update task id:${taskId} fail, error ${error}`,
+      );
+    }
+  }
+
+  async deleteTaskById(taskId: string) {
+    try {
+      const res = await this.taskModule
+        .deleteOne({
+          _id: taskId,
+        })
+        .exec();
+      if (res.deletedCount === 0) {
+        throw new BadRequestException(`delete taskId ${taskId}fail`);
+      }
+      return {
+        msg: `delete taskId ${taskId} successful`,
+      };
+    } catch (error) {
+      throw new BadRequestException(`delete operation fail error ${error}`);
     }
   }
 }
