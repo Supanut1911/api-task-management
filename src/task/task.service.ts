@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/user/model/user.model';
 import { Task } from './model/tasks.model';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateTaskDTO } from './DTO/createTask.dto';
 
 @Injectable()
@@ -28,5 +28,17 @@ export class TaskService {
     existUser.tasks = [...existUser.tasks, task];
     existUser.save();
     return task;
+  }
+
+  async getAllTasksByUserId(user: User) {
+    const stringId = user.id;
+    const query = { user: new mongoose.Types.ObjectId(stringId) };
+
+    try {
+      const tasks = await this.taskModule.find(query);
+      return tasks;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 }
