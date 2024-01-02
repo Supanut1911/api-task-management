@@ -6,7 +6,8 @@ import { comparePassword } from 'src/utils/bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService, // private readonly jwtService: JwtService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
   async validateUser(username: string, password: string) {
     const user = await this.userService.findUserByUsername(username);
@@ -23,12 +24,11 @@ export class AuthService {
 
     const payload = {
       username: userRes.username,
-      email: userRes.email,
       sub: userRes._id,
     };
 
     return {
-      // access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload),
     };
   }
 }

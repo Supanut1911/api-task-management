@@ -29,10 +29,15 @@ class ConfigService {
   public getMongoConfig() {
     return process.env.MONGO_URL;
   }
+
+  public getJWTSECRET() {
+    return process.env.JWT_SECRET;
+  }
 }
 
 const configService = new ConfigService(process.env).ensureValues([
   'MONGO_URL',
+  'JWT_SECRET',
 ]);
 
 export { configService };
