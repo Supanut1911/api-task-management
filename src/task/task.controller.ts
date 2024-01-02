@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDTO } from './DTO/createTask.dto';
 import { GetUser } from 'src/utils/get-user.decorator';
@@ -21,5 +21,10 @@ export class TaskController {
   @Get()
   async getAllTasksByUserId(@GetUser() user: User) {
     return await this.taskService.getAllTasksByUserId(user);
+  }
+
+  @Get(':taskId')
+  async getTaskById(@Param('taskId') taskId: string) {
+    return await this.taskService.getTaskById(taskId);
   }
 }

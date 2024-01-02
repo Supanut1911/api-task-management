@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/user/model/user.model';
 import { Task } from './model/tasks.model';
@@ -39,6 +43,18 @@ export class TaskService {
       return tasks;
     } catch (error) {
       throw new BadRequestException(error);
+    }
+  }
+
+  async getTaskById(taskId: string) {
+    try {
+      const task = await this.taskModule.findById(taskId);
+      if (!task) {
+        throw new NotFoundException(`not found task id:${taskId}`);
+      }
+      return task;
+    } catch (error) {
+      throw new BadRequestException(`query task id :${taskId} fail`);
     }
   }
 }
