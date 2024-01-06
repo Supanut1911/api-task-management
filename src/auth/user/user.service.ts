@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './model/user.model';
+import { User } from '../model/user.model';
 import { Model } from 'mongoose';
-import { CreateUserDTO } from './DTO/createUser.dto';
+import { CreateUserDTO } from '../DTO/createUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
 
 @Injectable()

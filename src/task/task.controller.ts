@@ -11,7 +11,7 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDTO } from './DTO/createTask.dto';
 import { GetUser } from 'src/utils/get-user.decorator';
-import { User } from 'src/user/model/user.model';
+import { User } from 'src/auth/model/user.model';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateTaskDTO } from './DTO/updateTask.dto';
 
