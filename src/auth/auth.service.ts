@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user/user.service';
-import { comparePassword } from 'src/utils/bcrypt';
+import { comparePassword } from './bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
       expireIn: 3000,
       userId: userRes._id,
     };

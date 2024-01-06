@@ -8,6 +8,9 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { configService } from 'src/config/config.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserSchema } from './model/user.model';
+import { UserController } from './user/user.controller';
 
 @Module({
   imports: [
@@ -19,9 +22,15 @@ import { configService } from 'src/config/config.service';
         expiresIn: '7200s',
       },
     }),
+    MongooseModule.forFeature([
+      {
+        name: 'User',
+        schema: UserSchema,
+      },
+    ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  controllers: [AuthController, UserController],
+  providers: [AuthService, UserService, LocalStrategy, JwtStrategy],
+  exports: [AuthService, UserService],
 })
 export class AuthModule {}
