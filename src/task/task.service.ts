@@ -6,7 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/auth/model/user.model';
 import { Task } from './model/tasks.model';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateTaskDTO } from './DTO/createTask.dto';
 import { UpdateTaskDTO } from './DTO/updateTask.dto';
 
@@ -14,42 +14,66 @@ import { UpdateTaskDTO } from './DTO/updateTask.dto';
 export class TaskService {
   constructor(
     @InjectModel('Task')
-    private readonly taskModule: Model<Task>,
+    private readonly taskModel: Model<Task>,
 
     @InjectModel('User')
-    private readonly userModule: Model<User>,
+    private readonly userModel: Model<User>,
   ) {}
 
   async createTask(user: User, createTaskDTO: CreateTaskDTO) {
     const { title, description } = createTaskDTO;
-    const newTask = new this.taskModule({
+    const newTask = new this.taskModel({
       title,
       description,
       user: user.id,
     });
 
     const task = await newTask.save();
-    const existUser = await this.userModule.findById(user.id);
+    const existUser = await this.userModel.findById(user.id);
     existUser.tasks = [...existUser.tasks, task];
     existUser.save();
     return task;
   }
 
-  async getAllTasksByUserId(user: User) {
-    const stringId = user.id;
-    const query = { user: new mongoose.Types.ObjectId(stringId) };
-
+  async getAllTasks(pageSize: number, page: number) {
     try {
-      const tasks = await this.taskModule.find(query);
-      return tasks;
+      const countOngoingTasks = await this.taskModel
+        .find({ isActive: true })
+        .countDocuments();
+
+      const countDoneTasks = await this.taskModel
+        .find({ isActive: false })
+        .countDocuments();
+      if (pageSize && page) {
+        console.log(pageSize, page);
+
+        const tasks = await this.taskModel
+          .find()
+          .skip(pageSize * (page - 1))
+          .limit(pageSize);
+        return {
+          msg: 'fetch success',
+          tasks,
+          countOngoingTasks,
+          countDoneTasks,
+        };
+      } else {
+        const tasks = await this.taskModel.find();
+
+        return {
+          tasks,
+          countOngoingTasks,
+          countDoneTasks,
+        };
+      }
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException(`query task fail, error ${error}`);
     }
   }
 
   async getTaskById(taskId: string) {
     try {
-      const task = await this.taskModule.findById(taskId);
+      const task = await this.taskModel.findById(taskId);
       if (!task) {
         throw new NotFoundException(`not found task id:${taskId}`);
       }
@@ -82,7 +106,7 @@ export class TaskService {
 
   async deleteTaskById(taskId: string) {
     try {
-      const res = await this.taskModule
+      const res = await this.taskModel
         .deleteOne({
           _id: taskId,
         })

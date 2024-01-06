@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
@@ -15,11 +16,11 @@ import { User } from 'src/auth/model/user.model';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateTaskDTO } from './DTO/updateTask.dto';
 
-@UseGuards(JwtAuthGuard)
 @Controller('task')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createTask(
     @Body() createTaskDTO: CreateTaskDTO,
@@ -29,8 +30,9 @@ export class TaskController {
   }
 
   @Get()
-  async getAllTasksByUserId(@GetUser() user: User) {
-    return await this.taskService.getAllTasksByUserId(user);
+  async getAllTasks(@Request() req) {
+    const { pageStart, page } = req.query;
+    return await this.taskService.getAllTasks(pageStart, page);
   }
 
   @Get(':taskId')
@@ -38,6 +40,7 @@ export class TaskController {
     return await this.taskService.getTaskById(taskId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':taskId')
   async updateTaskById(
     @Param('taskId') taskId: string,
@@ -47,6 +50,7 @@ export class TaskController {
     return await this.taskService.updateTaskById(updateTaskDTO, taskId, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':taskId')
   async deleteTaskById(@Param('taskId') taskId: string) {
     return await this.taskService.deleteTaskById(taskId);
