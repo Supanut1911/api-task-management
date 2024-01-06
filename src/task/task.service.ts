@@ -125,21 +125,32 @@ export class TaskService {
     }
   }
 
-  async deleteTaskById(taskId: string) {
+  async deleteTaskById(taskId: string, userId: string) {
     try {
-      const res = await this.taskModel
-        .deleteOne({
-          _id: taskId,
-        })
-        .exec();
+      const task = await this.taskModel.findOne({
+        _id: taskId,
+        creator: userId,
+      });
+
+      if (!task) {
+        throw new NotFoundException(
+          `can't delete task because it not your task`,
+        );
+      }
+
+      const res = await this.taskModel.deleteOne({
+        _id: taskId,
+      });
+
       if (res.deletedCount === 0) {
         throw new BadRequestException(`delete taskId ${taskId}fail`);
       }
+
       return {
         msg: `delete taskId ${taskId} successful`,
       };
     } catch (error) {
-      throw new BadRequestException(`delete operation fail error ${error}`);
+      throw new BadRequestException(`Delete task not successful`);
     }
   }
 }

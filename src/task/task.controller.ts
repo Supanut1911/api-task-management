@@ -56,7 +56,7 @@ export class TaskController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':taskId')
-  async deleteTaskById(@Param('taskId') taskId: string) {
-    return await this.taskService.deleteTaskById(taskId);
+  async deleteTaskById(@Param('taskId') taskId: string, @GetUser() user: User) {
+    return await this.taskService.deleteTaskById(taskId, user.id);
   }
 }
