@@ -26,7 +26,7 @@ export class TaskController {
     @Body() createTaskDTO: CreateTaskDTO,
     @GetUser() user: User,
   ) {
-    return await this.taskService.createTask(user, createTaskDTO);
+    return await this.taskService.createTask(user.id, createTaskDTO);
   }
 
   @Get()

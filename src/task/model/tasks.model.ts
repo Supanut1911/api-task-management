@@ -3,8 +3,9 @@ import * as mongoose from 'mongoose';
 export const TaskSchema = new mongoose.Schema({
   title: { type: String, require: true },
   description: { type: String, require: true },
-  status: { type: Boolean, default: false },
   user: { type: mongoose.Types.ObjectId, ref: 'User' },
+  creator: { type: mongoose.Types.ObjectId, ref: 'User' },
+  isActive: { type: Boolean, default: true },
 });
 
 export interface Task extends mongoose.Document {
@@ -12,4 +13,5 @@ export interface Task extends mongoose.Document {
   title: string;
   description: string;
   status: boolean;
+  creator: string;
 }
