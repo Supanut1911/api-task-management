@@ -59,4 +59,13 @@ export class TaskController {
   async deleteTaskById(@Param('taskId') taskId: string, @GetUser() user: User) {
     return await this.taskService.deleteTaskById(taskId, user.id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/status/:taskId')
+  async updateTaskStatus(
+    @Param('taskId') taskId: string,
+    @GetUser() user: User,
+  ) {
+    return await this.taskService.updateTaskStatus(taskId, user.id);
+  }
 }

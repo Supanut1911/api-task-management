@@ -153,4 +153,17 @@ export class TaskService {
       throw new BadRequestException(`Delete task not successful`);
     }
   }
+
+  async updateTaskStatus(taskId, userId: string) {
+    try {
+      const taskFound = await this.taskModel.findOneAndUpdate(
+        { _id: taskId, creator: userId },
+        { isActive: false },
+        { new: true },
+      );
+      return taskFound;
+    } catch (error) {
+      throw new BadRequestException(`Update task status not successful`);
+    }
+  }
 }
