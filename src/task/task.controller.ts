@@ -42,8 +42,9 @@ export class TaskController {
   async updateTaskById(
     @Param('taskId') taskId: string,
     @Body() updateTaskDTO: UpdateTaskDTO,
+    @GetUser() user: User,
   ) {
-    return await this.taskService.updateTaskById(updateTaskDTO, taskId);
+    return await this.taskService.updateTaskById(updateTaskDTO, taskId, user);
   }
 
   @Delete(':taskId')

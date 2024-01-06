@@ -25,9 +25,10 @@ export class UserService {
         password: hashPassword,
       });
       const user = await newUser.save();
+
       return user;
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException(`error ${error}`);
     }
   }
 
@@ -41,7 +42,7 @@ export class UserService {
       }
       return user;
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException(`error ${error}`);
     }
   }
 }

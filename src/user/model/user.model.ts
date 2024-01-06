@@ -8,6 +8,7 @@ export const UserSchema = new mongoose.Schema({
     {
       type: mongoose.Types.ObjectId,
       ref: 'Task',
+      require: true,
     },
   ],
 });

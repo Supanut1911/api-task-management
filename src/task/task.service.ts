@@ -61,7 +61,11 @@ export class TaskService {
     }
   }
 
-  async updateTaskById(updateTaskDTO: UpdateTaskDTO, taskId: string) {
+  async updateTaskById(
+    updateTaskDTO: UpdateTaskDTO,
+    taskId: string,
+    user: User,
+  ) {
     const { title, description } = updateTaskDTO;
     try {
       const updateTask = await this.getTaskById(taskId);

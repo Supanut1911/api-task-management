@@ -6,13 +6,8 @@ import { CreateUserDTO } from './DTO/createUser.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('signup')
   async insertUser(@Body() createUserDTO: CreateUserDTO) {
     return await this.userService.insertUser(createUserDTO);
-  }
-
-  @Get(':email')
-  async findUserByEmail(@Param('email') email: string) {
-    return await this.userService.findUserByUsername(email);
   }
 }
