@@ -47,7 +47,11 @@ export class TaskController {
     @Body() updateTaskDTO: UpdateTaskDTO,
     @GetUser() user: User,
   ) {
-    return await this.taskService.updateTaskById(updateTaskDTO, taskId, user);
+    return await this.taskService.updateTaskById(
+      updateTaskDTO,
+      taskId,
+      user.id,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

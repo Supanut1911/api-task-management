@@ -100,19 +100,28 @@ export class TaskService {
   async updateTaskById(
     updateTaskDTO: UpdateTaskDTO,
     taskId: string,
-    user: User,
+    userId: string,
   ) {
     const { title, description } = updateTaskDTO;
+    const updateFields = {};
+    if (title) updateFields['title'] = title;
+    if (description) updateFields['description'] = description;
+
     try {
-      const updateTask = await this.getTaskById(taskId);
-      if (title) updateTask.title = title;
-      if (description) updateTask.description = description;
-      updateTask.save();
-      return updateTask;
-    } catch (error) {
-      throw new BadRequestException(
-        `update task id:${taskId} fail, error ${error}`,
+      const taskFoundAndUpdate = await this.taskModel.findOneAndUpdate(
+        { _id: taskId, creator: userId },
+        updateFields,
+        { new: true },
       );
+
+      if (!taskFoundAndUpdate) {
+        throw new NotFoundException(
+          `can't update task because it not your task`,
+        );
+      }
+      return taskFoundAndUpdate;
+    } catch (error) {
+      throw new BadRequestException(`Update task not successful`);
     }
   }
 
