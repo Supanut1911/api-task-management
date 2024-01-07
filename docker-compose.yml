@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  task_management_api:
+    container_name: task_management_api
+    build: .
+    command: npm run start:prod
+    ports:
+      - 4000:4000
+    restart: unless-stopped

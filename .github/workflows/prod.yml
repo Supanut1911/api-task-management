@@ -1,0 +1,25 @@
+name: TASK_MANAGEMENT
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Deploy:
+    runs-on: [self-hosted, main_worker]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Create .env
+        run: |
+          cat << EOF > .env
+          MONGO_URL=${{secrets.MONGO_URL}}
+          JWT_SECRET=${{secrets.JWT_SECRET}}
+          EOF
+          echo "create .env file"
+
+      - name: Run Docker Compose
+        run: docker-compose up -d --build
+
+      - name: Clear Unused Containers
+        run: docker system prune -f
