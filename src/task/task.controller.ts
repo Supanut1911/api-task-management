@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDTO } from './DTO/createTask.dto';
-import { GetUser } from 'src/utils/get-user.decorator';
-import { User } from 'src/auth/model/user.model';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/model/user.model';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateTaskDTO } from './DTO/updateTask.dto';
 
 @Controller('task')

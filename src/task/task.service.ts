@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/auth/model/user.model';
+import { User } from '../auth/model/user.model';
 import { Task } from './model/tasks.model';
 import { Model } from 'mongoose';
 import { CreateTaskDTO } from './DTO/createTask.dto';

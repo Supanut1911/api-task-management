@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Task } from 'src/task/model/tasks.model';
+import { Task } from '../../task/model/tasks.model';
 
 export const UserSchema = new mongoose.Schema({
   username: { type: String, require: true, unique: true },
