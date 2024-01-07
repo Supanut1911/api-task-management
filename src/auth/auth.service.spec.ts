@@ -5,7 +5,6 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from './model/user.model';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { comparePassword } from './bcrypt';
 import * as bcrypt from 'bcrypt';
 
 describe('AuthService', () => {

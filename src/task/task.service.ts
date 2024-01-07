@@ -21,28 +21,33 @@ export class TaskService {
   ) {}
 
   async createTask(userId: string, createTaskDTO: CreateTaskDTO) {
-    const { title, description } = createTaskDTO;
-    const newTask = new this.taskModel({
-      title,
-      description,
-      creator: userId,
-    });
+    try {
+      const { title, description } = createTaskDTO;
+      const newTask = {
+        title,
+        description,
+        creator: userId,
+      };
 
-    const createdTask = await this.taskModel.create(newTask);
+      const createdTask = await this.taskModel.create(newTask);
 
-    await this.userModel.findByIdAndUpdate(
-      userId,
-      {
-        $push: {
-          tasks: createdTask,
+      await this.userModel.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            tasks: createdTask,
+          },
         },
-      },
-      { new: true },
-    );
-    return {
-      taskId: createdTask._id,
-    };
+        { new: true },
+      );
+      return {
+        taskId: createdTask._id,
+      };
+    } catch (error) {
+      throw new BadRequestException(`create task fail, error ${error}`);
+    }
   }
+
   catch(error) {
     throw new BadRequestException(`create task fail, error ${error}`);
   }
